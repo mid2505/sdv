@@ -1,0 +1,11 @@
+handle extras
+handle run out, stumped out
+
+selected striker should not be displayed in the selecting section of non-striker
+if a wicket goes of the last ball of a over, bowler change isn't happening
+
+
+
+
+
+the score updating page works perfectly, no issues, the things is the match is not updated as completed in the database after the end of second innings i said, i need to update the matches table to complete when the second innings completes, sometimes the updated code you give results in missing of existing logics
