@@ -1,0 +1,77 @@
+@startuml Fantasy Cricket Activity Diagram
+
+|Authentication|
+start
+:Launch App;
+:Show Login Screen;
+fork
+  :Login Flow|
+  if (User Exists?) then (yes)
+    if (Email Verified?) then (yes)
+      :Navigate to Home;
+    else (no)
+      :Show Verification Dialog;
+      :Send Verification Email;
+      stop
+    endif
+  else (no)
+    :Show Error;
+    stop
+  endif
+
+fork again
+  :Sign Up Flow|
+  :Create Account;
+  :Send Verification Email;
+  :Show Verification Message;
+  stop
+end fork
+
+|Home Screen|
+:Show Options;
+split
+  :Create Match;
+  :Select Teams;
+  :Set Match Details;
+  if (Schedule Match?) then (yes)
+    :Set Date & Time;
+    :Create Scheduled Match;
+  else (no)
+    :Create Live Match;
+  endif
+  :Update Match Status;
+
+split again
+  :Join Fantasy Contest;
+  :Select Players;
+  :Choose Captain;
+  :Choose Vice Captain;
+  :Submit Team;
+
+split again
+  :View Live Match;
+  :Update Score;
+  if (First Innings?) then (yes)
+    :Update Batting Stats;
+    :Update Bowling Stats;
+    :End First Innings;
+    :Start Second Innings;
+  else (no)
+    :Update Final Score;
+    :End Match;
+  endif
+  :Generate Match Summary;
+  :Update Fantasy Points;
+  :Update Leaderboard;
+end split
+
+|Fantasy Points System|
+:Calculate Batting Points;
+:Calculate Bowling Points;
+:Calculate Fielding Points;
+:Apply Captain Multiplier;
+:Update Team Rankings;
+
+stop
+
+@enduml

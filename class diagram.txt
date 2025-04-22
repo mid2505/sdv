@@ -1,0 +1,175 @@
+@startuml Fantasy Cricket System
+
+' Layout settings
+skinparam linetype ortho
+skinparam ClassBackgroundColor White
+skinparam ClassBorderColor Black
+skinparam nodesep 80
+skinparam ranksep 80
+
+' Core Entities
+class User {
+  -id: String
+  -email: String
+  -emailConfirmedAt: DateTime
+  +getFantasyTeams(): List<FantasyTeam>
+  +getMatchHistory(): List<Match>
+}
+
+class Team {
+  -id: int
+  -name: String
+  -players: List<Player>
+  +getTeamRoster(): List<Player>
+  +getTeamStats(): TeamStatistics
+}
+
+class Player {
+  -id: int
+  -name: String
+  -teamId: int
+  -role: PlayerRole
+  -isPlaying: bool
+  +getMatchStats(): PlayerMatchStats
+}
+
+class Match {
+  -id: String
+  -team1Id: int
+  -team2Id: int
+  -tossWinnerId: int
+  -tossDecision: String
+  -totalOvers: int
+  -status: MatchStatus
+  -venue: String
+  -matchDate: DateTime
+  +startMatch(): void
+  +updateScore(): void
+  +endMatch(): void
+}
+
+class MatchInnings {
+  -matchId: String
+  -inningsNumber: int
+  -battingTeamId: int
+  -bowlingTeamId: int
+  -totalRuns: int
+  -wickets: int
+  -overs: double
+  -extras: Extras
+  +updateScore(): void
+  +endInnings(): void
+}
+
+class Score {
+  -runs: int
+  -wickets: int
+  -overs: double
+  -runRate: double
+  -extras: Extras
+  +calculateRunRate(): double
+  +getProjectedScore(): int
+}
+
+class Extras {
+  -wides: int
+  -noBalls: int
+  -byes: int
+  -legByes: int
+  +getTotalExtras(): int
+}
+
+class MatchSummary {
+  -matchId: String
+  -result: String
+  -winningTeam: Team
+  -playerOfMatch: Player
+  -team1Score: Score
+  -team2Score: Score
+  -matchHighlights: List<String>
+  +generateSummary(): Map<String, dynamic>
+  +getHighlights(): List<String>
+}
+
+class FantasyTeam {
+  -id: int
+  -userId: String
+  -matchId: String
+  -players: List<Player>
+  -captain: Player
+  -viceCaptain: Player
+  -totalPoints: int
+  +selectPlayers(): void
+  +setCaptain(): void
+  +calculatePoints(): int
+}
+
+class FantasyPoints {
+  -playerId: int
+  -matchId: String
+  -runs: int
+  -wickets: int
+  -catches: int
+  -stumpings: int
+  -runOuts: int
+  -economy: double
+  -strikeRate: double
+  +calculateTotal(): int
+  +applyMultiplier(): int
+}
+
+class FantasyLeaderboard {
+  -matchId: String
+  -teams: List<FantasyTeam>
+  -rankings: Map<String, int>
+  -topScorers: List<FantasyTeam>
+  +updateRankings(): void
+  +getTopTeams(): List<FantasyTeam>
+  +getUserRank(userId: String): int
+}
+
+class PlayerMatchStats {
+  -matchId: String
+  -playerId: int
+  -runsScored: int
+  -ballsFaced: int
+  -wicketsTaken: int
+  -oversBowled: double
+  -catchesTaken: int
+  -stumpings: int
+  -runOuts: int
+  +updateStats(): void
+}
+
+enum MatchStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PlayerRole {
+  BATSMAN
+  BOWLER
+  ALL_ROUNDER
+  WICKET_KEEPER
+}
+
+' Relationships with clear labels
+User "1" *-- "*" FantasyTeam : "owns"
+Match "1" *-- "2" MatchInnings : "has"
+Match "1" *-- "1" MatchSummary : "generates"
+Match "1" -- "2" Team : "played between"
+Match "1" -- "1" Score : "maintains"
+Team "1" *-- "*" Player : "contains"
+MatchInnings "1" -- "1" Score : "tracks"
+Score "1" -- "1" Extras : "includes"
+FantasyTeam "*" -- "*" Player : "selects"
+FantasyTeam "1" -- "1" Player : "has captain"
+FantasyTeam "1" -- "1" Player : "has vice-captain"
+Player "1" -- "*" PlayerMatchStats : "accumulates"
+Player "1" -- "*" FantasyPoints : "earns"
+Match "1" -- "1" FantasyLeaderboard : "has"
+FantasyLeaderboard "1" -- "*" FantasyTeam : "ranks"
+
+@enduml

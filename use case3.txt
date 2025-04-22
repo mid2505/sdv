@@ -1,0 +1,28 @@
+' filepath: fantasy_usecases.puml
+@startuml Fantasy System Use Cases
+left to right direction
+skinparam linetype ortho
+
+:User: as user
+:System: as system
+
+rectangle "Fantasy System" {
+    usecase "Create Fantasy Team" as UC1
+    usecase "Select Players" as UC2
+    usecase "Set Captain/VC" as UC3
+    usecase "View Points" as UC4
+    usecase "Check Rankings" as UC5
+    usecase "Calculate Points" as UC6
+}
+
+user --> UC1
+user --> UC4
+user --> UC5
+system --> UC6
+
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC3 : <<include>>
+UC6 ..> UC4 : <<include>>
+UC6 ..> UC5 : <<include>>
+
+@enduml

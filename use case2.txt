@@ -1,0 +1,29 @@
+' filepath: match_usecases.puml
+@startuml Match Management Use Cases
+left to right direction
+skinparam linetype ortho
+
+:Admin: as admin
+:User: as user
+
+rectangle "Match Management" {
+    usecase "Create Match" as UC1
+    usecase "Schedule Match" as UC2
+    usecase "Update Live Score" as UC3
+    usecase "View Match Details" as UC4
+    usecase "Track Ball by Ball" as UC5
+    usecase "End Match" as UC6
+}
+
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC5
+admin --> UC6
+user --> UC4
+
+UC1 ..> UC2 : <<extend>>
+UC3 ..> UC5 : <<include>>
+UC6 ..> UC4 : <<include>>
+
+@enduml

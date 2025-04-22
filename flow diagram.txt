@@ -1,0 +1,91 @@
+@startuml Fantasy Cricket Flow Diagram
+
+skinparam ActivityBackgroundColor White
+skinparam ActivityBorderColor Black
+skinparam ArrowColor Black
+
+|Authentication|
+start
+:Launch App;
+if (User Exists?) then (yes)
+    :Show Login Screen;
+    :Enter Credentials;
+    if (Credentials Valid?) then (yes)
+        if (Email Verified?) then (yes)
+            :Navigate to Home;
+        else (no)
+            :Show Verification Dialog;
+            :Send Verification Email;
+            stop
+        endif
+    else (no)
+        :Show Error;
+        :Return to Login;
+    endif
+else (no)
+    :Show Sign Up Screen;
+    :Create Account;
+    :Send Verification Email;
+    :Return to Login;
+endif
+
+|Home Screen|
+if (User Action?) then (Create Match)
+    |Match Creation|
+    :Select Teams;
+    :Choose Toss Winner;
+    :Set Match Details;
+    if (Start Now?) then (yes)
+        :Initialize Live Match;
+    else (no)
+        :Schedule Match;
+        :Set Date/Time;
+    endif
+    
+else (View Match)
+    |Match Management|
+    if (Match Status?) then (Live)
+        :Show Score Update Screen;
+        :Update Ball by Ball;
+        :Track Player Stats;
+        if (First Innings?) then (yes)
+            :Complete First Innings;
+            :Start Second Innings;
+        else (no)
+            :Complete Match;
+            :Generate Summary;
+        endif
+        
+    else if (Upcoming) then
+        :Show Match Details;
+        :Enable Fantasy Team Creation;
+        
+    else (Completed)
+        :Show Match Summary;
+        :Display Fantasy Results;
+    endif
+endif
+
+|Fantasy System|
+fork
+    :Create Fantasy Team;
+    :Select Players;
+    :Choose Captain;
+    :Choose Vice-Captain;
+    :Submit Team;
+fork again
+    :Track Live Points;
+    :Update Player Points;
+    :Calculate Team Scores;
+    :Update Rankings;
+end fork
+
+|Score Management|
+:Update Ball Details;
+:Track Player Performance;
+:Calculate Stats;
+:Update Match Status;
+
+stop
+
+@enduml

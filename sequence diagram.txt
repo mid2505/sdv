@@ -1,0 +1,93 @@
+@startuml Fantasy Cricket Sequence Diagram
+
+' Styling
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+skinparam SequenceGroupBodyBackgroundColor white
+
+actor User
+participant "LoginPage" as Login
+participant "SignUpPage" as SignUp
+participant "AuthService" as Auth
+participant "HomePage" as Home
+participant "CreateMatchPage" as Match
+participant "FantasyTeam" as Fantasy
+participant "ScoreUpdating" as Score
+participant "Supabase" as DB
+
+' Authentication Flow
+group Authentication
+    User -> Login: Enter Credentials
+    activate Login
+    Login -> Auth: signInWithPassword()
+    activate Auth
+    Auth -> DB: Validate Credentials
+    
+    alt Email Not Verified
+        DB --> Auth: User Found (Not Verified)
+        Auth --> Login: Show Verification Dialog
+        Login -> Auth: resendVerification()
+        Auth -> DB: Send Verification Email
+        DB --> User: Verification Email
+    else Email Verified
+        DB --> Auth: User Found (Verified)
+        Auth --> Login: Success
+        Login -> Home: Navigate
+    else Invalid Credentials
+        DB --> Auth: Error
+        Auth --> Login: Show Error Message
+    end
+    deactivate Auth
+    deactivate Login
+end
+
+' Match Creation Flow
+group Match Management
+    User -> Home: Create Match
+    activate Home
+    Home -> Match: Navigate
+    activate Match
+    Match -> DB: fetchTeams()
+    DB --> Match: Teams List
+    
+    User -> Match: Set Match Details
+    Match -> DB: createMatch()
+    
+    alt Schedule Match
+        Match -> DB: scheduleMatch()
+        DB --> Match: Confirmation
+    else Start Now
+        Match -> Score: Navigate
+        activate Score
+        Score -> DB: updateScore()
+        Score -> DB: updatePlayerStats()
+        DB --> Score: Updated Data
+        deactivate Score
+    end
+    deactivate Match
+    deactivate Home
+end
+
+' Fantasy Team Flow
+group Fantasy Management
+    User -> Home: Create Fantasy Team
+    activate Home
+    Home -> Fantasy: Navigate
+    activate Fantasy
+    Fantasy -> DB: fetchPlayers()
+    DB --> Fantasy: Available Players
+    
+    User -> Fantasy: Select Players
+    User -> Fantasy: Set Captain/VC
+    Fantasy -> DB: createFantasyTeam()
+    DB --> Fantasy: Confirmation
+    
+    alt Match Live
+        DB -> Fantasy: Update Points
+        Fantasy -> DB: updateRankings()
+    end
+    deactivate Fantasy
+    deactivate Home
+end
+
+@enduml

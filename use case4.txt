@@ -1,0 +1,27 @@
+' filepath: scoring_usecases.puml
+@startuml Scoring System Use Cases
+left to right direction
+skinparam linetype ortho
+
+:Admin: as admin
+:System: as system
+
+rectangle "Scoring System" {
+    usecase "Update Ball Details" as UC1
+    usecase "Track Player Stats" as UC2
+    usecase "Update Match Status" as UC3
+    usecase "Generate Summary" as UC4
+    usecase "Calculate Player Points" as UC5
+}
+
+admin --> UC1
+system --> UC2
+system --> UC3
+system --> UC4
+system --> UC5
+
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC5 : <<include>>
+UC3 ..> UC4 : <<include>>
+
+@enduml
