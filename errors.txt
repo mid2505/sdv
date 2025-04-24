@@ -1,11 +1,11 @@
 handle extras
 handle run out, stumped out
-
 selected striker should not be displayed in the selecting section of non-striker
 if a wicket goes of the last ball of a over, bowler change isn't happening
+change the functionality of the back button to go to home page
+automatically refresh the comments page for every second.
+change the refresh timing for the live score page to 1 sec
 
+optional changes
+add a search bar in view matches to search using team names | alternative, free the database before showing it to miss
 
-
-
-
-the score updating page works perfectly, no issues, the things is the match is not updated as completed in the database after the end of second innings i said, i need to update the matches table to complete when the second innings completes, sometimes the updated code you give results in missing of existing logics
