@@ -1,0 +1,19 @@
+1.Define data visualization and explain it's role in decision making process in modern data driven environments. support your explanation with real-world examlples.
+
+2.Describe the different stages of the visualization pipeline. Illustrate each stage with a specific example(eg. health care, sales data, climate data)
+
+3.Explain Gibson's affordance theory.How is this theory relevant in the context of designing effective visual interfaces on dashboard?
+
+4. Analyze the costs(Time, resources and misinterpretation) and benifits(clarity, insights, communication) of using data visualization. Provide an example where the cost of visualization was justified by the outcome.
+
+5. List and explain the different types of data and analyse it by using any of the sample dataset.
+
+6. What are Ipython magic commands? Differentiate between line magics. write the example of each and explain their functionality using simple python code.
+
+7. Discuss how Ipython trails input and output history. How can a user access previously executed command and their results?
+
+8. When use the common types of errors encountered in Ipython? How does Ipython help in landing or displaying error better than the default python interpreter.
+
+9. write the program script in ipython that deliberately raises and exception(division by zero) and demonstrate how to control and manage the exception using try,except and else.
+
+10. what are %time,%timeit and %     used in ipython? compare there use for      and timing python code.include sample code to measure the execution time of a function.
